@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+    <!-- HEAD -->
+	<head>
+		<title>Boom</title>
+		<meta name="yandex-verification" content="353180fadd8a37ac" />
+		<meta charset="utf-8"/>
+		
+		<meta name="referrer" content="none">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css">
+
+        <!-- Bootstrap 5! -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+
+
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script> -->
+
+		<link rel="stylesheet" href="/staticfiles/assets/css/onemipt.css">
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+ 
+	</head>
+	<body>
+
+        <!-- NAVBAR -->
+		<nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+
+            <ul class="nav nav-pills nav-fill miptcolor">
+                <li class="nav-item miptcolor">
+                    <a class="nav-link" href="/">:|</a>
+                </li>
+            </ul>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+           
+        </div>
+        </nav>
+        
+
+	<div class="container-fluid">
+		
+		<div class="row" id="mainrows"> <!-- 4 колонны-->
+		
+	
+            
+            <div id="uploadformdiv" class="row-sm-3" style="background-color: #f2f2f2;">
+			<ul>
+				<li id='imageuploadid' style='margin-right:0px; margin-left:-32px'>
+
+                    <form id="fileuploadform" action="{% url 'uploadfuck' %}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" id="hiddensem" name="semup" value="1">
+                        <input type="hidden" id="hiddenzad" name="zadup" value="1338">
+                        <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
+
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="fileinput" aria-describedby="inputGroupFileAddon04" aria-label="Upload" name="image_file">
+                            <button class="btn btn-outline-secondary" type="submit" value="submit" id="inputGroupFileAddon04">Залить</button>
+                        </div>
+
+                    </form>
+
+                </li>
+
+			</ul>
+            </div>
+            
+
+		</div> <!-- /4 колонны-->
+        
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://www.google.com/recaptcha/api.js?render=6Lc5uWEbAAAAAD9q8SC7sVl1NNVxygrfNQ7BRXNC"></script>
+    
+        <!-- SEARCH FORM -->
+        <script>
+
+
+        // FILE UPLOAD FORM
+            $(document).ready(function () {
+                // catch the form's submit event
+                $('#fileuploadform').submit(function(event) {
+                    event.preventDefault();
+                    grecaptcha.ready(function() {
+                        grecaptcha.execute('6Lc5uWEbAAAAAD9q8SC7sVl1NNVxygrfNQ7BRXNC', {action: 'submit'}).then(function(token) {
+                            $("#recaptchaResponse").attr("value", token);
+                            console.log('Printing token below:');
+                            console.log(token);
+                            alert('Token\n\n' + token);
+                            var form = $('#fileuploadform')[0];
+                            var data = new FormData(form);
+                            // create an AJAX call
+                            $.ajax({
+                                url: "{% url 'uploadfuck' %}",
+                                data: data, // get the form data
+                                // contentType: "multipart/form-data",
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                method: "POST",
+                                enctype: 'multipart/form-data',
+                                // on success
+                                success: function(response) {
+                                    // upout = document.getElementById("uploadout");
+                                    // if (response.diditwork == 0) {
+                                    //     upout.style["display"] = "block";
+                                    // } else {
+                                    // upout.style["display"] = "none";
+                                    $("#inputGroupSelect04").attr("value", response.sem);
+                                    $("#physnumber").attr("value", response.zad);
+                                        // alert(response.search_output);
+                                    // }
+                                },
+                                // on error
+                                error: function(response) {
+                                    // alert the error if any error occured
+                                    console.log(response.responseJSON.errors)
+                                }
+                            });
+                        });
+                    });
+
+
+                    return false;
+                });
+            })
+        </script>
+
+
+    </div>
+    
+</body>
+</html>
